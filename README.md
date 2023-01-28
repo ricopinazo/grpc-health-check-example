@@ -4,5 +4,5 @@ A minimal example to demonstrate how to integrate the gRPC health checking proto
 
 See also:
 
-- https://github.com/grpc/grpc/blob/master/doc/health-checking.md
-- https://github.com/higherkindness/mu-scala
+- [gRPC health checking protocol](https://github.com/grpc/grpc/blob/master/doc/health-checking.md)
+- [Mu-scala project](https://github.com/higherkindness/mu-scala)
