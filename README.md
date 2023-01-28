@@ -1,6 +1,6 @@
 # grpc-health-check-example
 
-A minimal example to demonstrate how to integrate gRPC health checking protocol with an existing Mu-Scala project.
+A minimal example to demonstrate how to integrate the gRPC health checking protocol with an existing Mu-Scala project.
 
 See also:
 
