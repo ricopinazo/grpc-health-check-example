@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package com.ricopinazo;
+
+import "google/protobuf/empty.proto";
+
+service Dummy {
+  rpc startServing(google.protobuf.Empty) returns (google.protobuf.Empty);
+  rpc stopServing(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
