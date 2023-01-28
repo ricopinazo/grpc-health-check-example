@@ -1,6 +1,7 @@
 package com.ricopinazo
 
 import cats.effect.{Async, ExitCode, IO, IOApp, Resource}
+import cats.syntax.all._
 import com.ricopinazo.dummy.Dummy
 import grpc.health.v1.health.Health
 import higherkindness.mu.rpc.healthcheck.HealthService
@@ -19,13 +20,13 @@ object Server extends IOApp {
       dummyDef  <- Dummy.bindService[F](Async[F], dummy)
     } yield List(healthDef, dummyDef)
 
-  def runServices: IO[ExitCode] = services[IO].use { services =>
+  def runServices[F[_]: Async]: F[ExitCode] = services[F].use { services =>
     for {
-      config <- IO.pure(services.map(service => AddService(service)))
-      server <- GrpcServer.default[IO](port, config)
-      _      <- GrpcServer.server[IO](server)
+      config <- Async[F].pure(services.map(service => AddService(service)))
+      server <- GrpcServer.default[F](port, config)
+      _      <- GrpcServer.server[F](server)
     } yield ExitCode.Success
   }
 
-  override def run(args: List[String]): IO[ExitCode] = runServices
+  override def run(args: List[String]): IO[ExitCode] = runServices[IO]
 }
