@@ -10,7 +10,7 @@ object Server extends ResourceApp.Forever {
 
   val port = 8000
 
-  def runServices[F[_]: Async]: Resource[F, Unit] =
+  def makeServer[F[_]: Async]: Resource[F, Unit] =
     for {
       health    <- Resource.eval(HealthService.build[F])
       healthDef <- Health.bindService[F](Async[F], health)
@@ -21,5 +21,5 @@ object Server extends ResourceApp.Forever {
       _         <- GrpcServer.serverResource[F](server)
     } yield ()
 
-  override def run(args: List[String]): Resource[IO, Unit] = runServices
+  override def run(args: List[String]): Resource[IO, Unit] = makeServer
 }
