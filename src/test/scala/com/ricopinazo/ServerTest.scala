@@ -13,7 +13,7 @@ class ServerTest extends CatsEffectSuite {
   test("Dummy service switches the health state when requested to start and stop serving") {
     val clients =
       for {
-        _      <- Resource.make(Server.runServices[IO].start)(fiber => fiber.cancel)
+        _      <- Server.runServices[IO]
         health <- Health.client[IO](ChannelForAddress("localhost", Server.port))
         dummy  <- Dummy.client[IO](ChannelForAddress("localhost", Server.port))
       } yield (health, dummy)
@@ -24,7 +24,6 @@ class ServerTest extends CatsEffectSuite {
           _        <- dummy.startServing(Empty())
           response <- health.Check(HealthCheckRequest(DummyService.name))
           _        <- IO.pure(assert(response.status.isServing))
-
           _        <- dummy.stopServing(Empty())
           response <- health.Check(HealthCheckRequest(DummyService.name))
           _        <- IO.pure(assert(response.status.isNotServing))
